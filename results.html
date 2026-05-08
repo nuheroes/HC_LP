@@ -244,30 +244,49 @@ if (!raw) {
   document.getElementById('r-meta').textContent = [dept, pos, years ? `근속 ${years}년` : null].filter(Boolean).join(' · ');
   document.getElementById('r-total').textContent = total.toFixed(2);
 
-  // 방사형 그래프 — 그라데이션
+  // 방사형 그래프 — 그라데이션 + 평균선
   const canvas = document.getElementById('radarChart');
   const ctx = canvas.getContext('2d');
   const cx = canvas.width / 2, cy = canvas.height / 2;
   const grad = ctx.createRadialGradient(cx, cy, 8, cx, cy, 150);
-  grad.addColorStop(0,   'rgba(68,114,196,0.60)');
-  grad.addColorStop(0.45,'rgba(155,89,182,0.38)');
-  grad.addColorStop(1,   'rgba(112,173,71,0.10)');
+  grad.addColorStop(0,   'rgba(68,114,196,0.50)');
+  grad.addColorStop(0.45,'rgba(155,89,182,0.28)');
+  grad.addColorStop(1,   'rgba(112,173,71,0.08)');
+
+  // 일반 학습자 평균 (전체 3.2점 기준 — 추후 실제 데이터로 교체 가능)
+  const BENCHMARK = [3.2, 3.1, 3.0, 3.2]; // Self / People / Change / Perf
 
   new Chart(ctx, {
     type: 'radar',
     data: {
       labels: areaScores.map(a => a.label),
-      datasets: [{
-        data: areaScores.map(a => a.score),
-        backgroundColor: grad,
-        borderColor: 'rgba(68,114,196,0.85)',
-        borderWidth: 2.5,
-        pointBackgroundColor: areaScores.map(a => a.color),
-        pointBorderColor: '#fff',
-        pointBorderWidth: 2,
-        pointRadius: 5,
-        pointHoverRadius: 7,
-      }]
+      datasets: [
+        {
+          label: '내 점수',
+          data: areaScores.map(a => a.score),
+          backgroundColor: grad,
+          borderColor: 'rgba(68,114,196,0.8)',
+          borderWidth: 1.5,
+          pointBackgroundColor: areaScores.map(a => a.color),
+          pointBorderColor: '#fff',
+          pointBorderWidth: 1.5,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+        },
+        {
+          label: '학습자 평균',
+          data: BENCHMARK,
+          backgroundColor: 'rgba(220,50,50,0.06)',
+          borderColor: 'rgba(220,50,50,0.75)',
+          borderWidth: 1.2,
+          borderDash: [4, 3],
+          pointBackgroundColor: 'rgba(220,50,50,0.8)',
+          pointBorderColor: '#fff',
+          pointBorderWidth: 1.5,
+          pointRadius: 3,
+          pointHoverRadius: 5,
+        }
+      ]
     },
     options: {
       responsive: true,
@@ -278,7 +297,18 @@ if (!raw) {
         pointLabels: { font: { size: 12, family: 'Pretendard', weight: '700' }, color: '#1A1916' },
         angleLines: { color: 'rgba(0,0,0,0.08)' },
       }},
-      plugins: { legend: { display: false } },
+      plugins: {
+        legend: {
+          display: true,
+          position: 'bottom',
+          labels: { font: { size: 11, family: 'Pretendard' }, boxWidth: 12, padding: 12,
+            generateLabels: (chart) => [
+              { text: '내 점수', fillStyle: 'rgba(68,114,196,0.6)', strokeStyle: 'rgba(68,114,196,0.8)', lineWidth: 1.5 },
+              { text: '학습자 평균', fillStyle: 'rgba(220,50,50,0.1)', strokeStyle: 'rgba(220,50,50,0.75)', lineWidth: 1.2, lineDash: [4,3] }
+            ]
+          }
+        }
+      },
       animation: { duration: 700, easing: 'easeInOutQuart' }
     }
   });
