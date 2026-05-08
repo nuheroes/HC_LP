@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>리더십 진단 결과 — 이노핏파트너즈</title>
-<link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;900&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 :root {
@@ -21,132 +21,127 @@
   --radius: 12px;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: var(--bg); font-family: 'Pretendard', sans-serif; color: var(--text); }
+body { background: var(--bg); font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif; color: var(--text); }
 
-/* ── 헤더 ── */
 .header {
   background: var(--accent); color: #fff;
   padding: 22px 40px;
   display: flex; align-items: center; justify-content: space-between;
 }
-.header-logo { font-family: 'DM Serif Display', serif; font-size: 17px; }
+.header-logo { font-size: 17px; font-weight: 900; letter-spacing: -0.02em; }
 .header-sub { font-size: 11px; color: #aaa; margin-top: 2px; }
-.print-btn {
-  background: rgba(255,255,255,0.15); color: #fff;
-  border: 1px solid rgba(255,255,255,0.3); border-radius: 8px;
-  padding: 8px 18px; font-size: 13px; font-family: 'Pretendard', sans-serif;
-  cursor: pointer; transition: background 0.2s;
+.btn-ghost {
+  background: rgba(255,255,255,0.12); color: #fff;
+  border: 1px solid rgba(255,255,255,0.25); border-radius: 8px;
+  padding: 8px 16px; font-size: 12px; font-family: inherit;
+  cursor: pointer; transition: background 0.2s; font-weight: 600;
 }
-.print-btn:hover { background: rgba(255,255,255,0.25); }
+.btn-ghost:hover { background: rgba(255,255,255,0.22); }
 
-/* ── 레이아웃 ── */
-.container { max-width: 820px; margin: 0 auto; padding: 36px 24px 80px; }
+.container { max-width: 820px; margin: 0 auto; padding: 32px 24px 80px; }
 
-/* ── 응답자 카드 ── */
+.tab-bar { display: flex; gap: 6px; margin-bottom: 16px; }
+.tab-btn {
+  padding: 8px 18px; font-size: 13px; font-weight: 600;
+  border: 1px solid var(--border); border-radius: 8px;
+  background: transparent; color: var(--muted);
+  cursor: pointer; font-family: inherit; transition: all 0.15s;
+}
+.tab-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
 .respondent-card {
   background: var(--accent); color: #fff;
-  border-radius: var(--radius); padding: 28px 36px;
-  margin-bottom: 24px;
+  border-radius: var(--radius); padding: 26px 34px;
+  margin-bottom: 16px;
   display: flex; align-items: center; justify-content: space-between;
 }
-.respondent-card h2 { font-family: 'DM Serif Display', serif; font-size: 24px; font-weight: 400; }
-.respondent-meta { font-size: 13px; color: #bbb; margin-top: 6px; }
-.total-score-wrap { text-align: right; }
-.total-score-num { font-family: 'DM Serif Display', serif; font-size: 48px; line-height: 1; }
-.total-score-label { font-size: 12px; color: #bbb; margin-top: 4px; }
+.respondent-card h2 { font-size: 24px; font-weight: 900; letter-spacing: -0.03em; }
+.respondent-meta { font-size: 13px; color: #bbb; margin-top: 4px; }
+.total-score-num { font-size: 50px; font-weight: 900; line-height: 1; letter-spacing: -0.04em; }
+.total-score-label { font-size: 11px; color: #bbb; margin-top: 3px; text-align: right; }
 
-/* ── 카드 공통 ── */
 .card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 28px 32px;
-  margin-bottom: 20px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 24px 28px; margin-bottom: 14px;
 }
 .card-title {
-  font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
   text-transform: uppercase; color: var(--muted);
-  margin-bottom: 20px; padding-bottom: 12px;
+  margin-bottom: 18px; padding-bottom: 10px;
   border-bottom: 1px solid var(--border);
 }
 
-/* ── 방사형 그래프 ── */
-.chart-wrap {
-  display: flex; gap: 32px; align-items: flex-start;
-}
-.chart-canvas-wrap { flex: 0 0 360px; }
+/* 방사형 그래프 */
+.chart-wrap { display: flex; gap: 24px; align-items: center; }
+.chart-canvas-wrap { flex: 0 0 300px; }
 .chart-legend { flex: 1; }
 .legend-item {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 10px 0; border-bottom: 1px solid var(--border);
+  padding: 9px 0; border-bottom: 1px solid var(--border);
 }
 .legend-item:last-child { border-bottom: none; }
-.legend-dot-label { display: flex; align-items: center; gap: 10px; }
-.legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-.legend-label { font-size: 14px; }
-.legend-score { font-size: 14px; font-weight: 600; }
-.legend-bar-wrap { margin-top: 4px; height: 4px; background: var(--bg); border-radius: 2px; width: 100%; }
+.legend-left { flex: 1; }
+.legend-dot-label { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+.legend-label { font-size: 13px; font-weight: 700; }
+.legend-desc { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+.legend-bar-wrap { height: 4px; background: var(--bg); border-radius: 2px; }
 .legend-bar-fill { height: 100%; border-radius: 2px; }
+.legend-score { font-size: 17px; font-weight: 900; margin-left: 14px; letter-spacing: -0.02em; }
 
-/* ── 하위요인 그리드 ── */
-.factor-grid {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 10px;
+/* 하위요인 컴팩트 테이블 */
+.factor-table { width: 100%; border-collapse: collapse; }
+.factor-table thead th {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--muted);
+  padding: 5px 8px; text-align: left; border-bottom: 1px solid var(--border);
 }
-.factor-item {
-  display: flex; flex-direction: column; gap: 6px;
-  padding: 12px 14px;
-  background: var(--bg); border-radius: 8px;
+.factor-table thead th.r { text-align: right; }
+.factor-row td { padding: 6px 8px; border-bottom: 1px solid #F2F0EA; vertical-align: middle; }
+.factor-row:last-child td { border-bottom: none; }
+.area-badge {
+  display: inline-block; font-size: 9px; font-weight: 700;
+  padding: 1px 6px; border-radius: 8px; color: #fff;
+  margin-right: 5px; vertical-align: middle;
 }
-.factor-top { display: flex; align-items: center; justify-content: space-between; }
-.factor-name { font-size: 13px; font-weight: 500; }
-.factor-score { font-size: 13px; font-weight: 600; }
-.factor-bar-bg { height: 5px; background: var(--border); border-radius: 3px; }
-.factor-bar-fill { height: 100%; border-radius: 3px; transition: width 0.6s ease; }
-.factor-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
+.factor-name { font-size: 12px; font-weight: 600; }
+.bar-cell { width: 100px; }
+.bar-bg { height: 5px; background: var(--bg); border-radius: 3px; }
+.bar-fill { height: 100%; border-radius: 3px; }
+.score-cell { font-size: 12px; font-weight: 900; text-align: right; width: 40px; }
+.desc-cell { font-size: 11px; color: var(--muted); line-height: 1.4; }
 
-/* ── 영역 섹션 구분 ── */
-.area-section-title {
-  font-size: 12px; font-weight: 600; letter-spacing: 0.06em;
-  color: #fff; padding: 4px 12px; border-radius: 20px;
-  display: inline-block; margin-bottom: 10px;
-}
+/* 강점/개발 */
+.highlight-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.hl-card { border-radius: 10px; padding: 18px 20px; }
+.hl-card.s { background: #EAF3DE; border: 1px solid #C0DD97; }
+.hl-card.d { background: #FAECE7; border: 1px solid #F5C4B3; }
+.hl-tag { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; margin-bottom: 10px; }
+.hl-tag.s { color: #3B6D11; }
+.hl-tag.d { color: #993C1D; }
+.hl-row { display: flex; justify-content: space-between; align-items: baseline; gap: 6px; }
+.hl-name { font-size: 13px; font-weight: 700; }
+.hl-score { font-size: 13px; font-weight: 900; white-space: nowrap; }
+.hl-score.s { color: #3B6D11; }
+.hl-score.d { color: #993C1D; }
+.hl-interp { font-size: 11px; color: var(--muted); line-height: 1.5; margin-top: 2px; margin-bottom: 8px; }
 
-/* ── 강점/개발 ── */
-.highlight-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-.highlight-card {
-  border-radius: 10px; padding: 20px 22px;
-}
-.highlight-card.strength { background: #EAF3DE; border: 1px solid #C0DD97; }
-.highlight-card.develop  { background: #FAECE7; border: 1px solid #F5C4B3; }
-.highlight-icon { font-size: 22px; margin-bottom: 10px; }
-.highlight-title { font-size: 13px; font-weight: 600; margin-bottom: 12px; }
-.highlight-title.strength { color: #3B6D11; }
-.highlight-title.develop  { color: #993C1D; }
-.highlight-list { display: flex; flex-direction: column; gap: 8px; }
-.highlight-row { display: flex; align-items: center; justify-content: space-between; }
-.highlight-name { font-size: 13px; }
-.highlight-score { font-size: 12px; font-weight: 600; }
-.highlight-score.s { color: #3B6D11; }
-.highlight-score.d { color: #993C1D; }
-.highlight-interp { font-size: 12px; color: var(--muted); margin-top: 3px; line-height: 1.5; }
-
-/* ── PDF 인쇄 ── */
 @media print {
-  body { background: #fff; }
-  .header .print-btn { display: none; }
+  .header .btn-ghost, .tab-bar { display: none; }
+  #tab-my { display: block !important; }
+  #tab-all { display: none !important; }
   .container { padding: 16px; max-width: 100%; }
   .card { break-inside: avoid; }
-  .highlight-grid { break-inside: avoid; }
 }
-
 @media (max-width: 640px) {
   .chart-wrap { flex-direction: column; }
   .chart-canvas-wrap { flex: none; width: 100%; }
-  .factor-grid { grid-template-columns: 1fr; }
   .highlight-grid { grid-template-columns: 1fr; }
-  .respondent-card { flex-direction: column; gap: 16px; }
-  .total-score-wrap { text-align: left; }
+  .respondent-card { flex-direction: column; gap: 10px; }
+  .desc-cell { display: none; }
+  .header { padding: 16px 20px; }
 }
 </style>
 </head>
@@ -157,180 +152,198 @@ body { background: var(--bg); font-family: 'Pretendard', sans-serif; color: var(
     <div class="header-logo">이노핏파트너즈</div>
     <div class="header-sub">디지털 리더십 진단 결과</div>
   </div>
-  <button class="print-btn" onclick="window.print()">PDF 저장 / 인쇄</button>
+  <button class="btn-ghost" onclick="window.print()">PDF 저장</button>
 </div>
 
 <div class="container">
-
-  <!-- 응답자 정보 -->
-  <div class="respondent-card" id="resp-card">
-    <div>
-      <h2 id="r-name">—</h2>
-      <div class="respondent-meta" id="r-meta">—</div>
-    </div>
-    <div class="total-score-wrap">
-      <div class="total-score-num" id="r-total">—</div>
-      <div class="total-score-label">전체 평균 (5점 만점)</div>
-    </div>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('my')">내 결과</button>
+    <button class="tab-btn" onclick="switchTab('all')">전체 응답 조회</button>
   </div>
 
-  <!-- 방사형 그래프 -->
-  <div class="card">
-    <div class="card-title">영역별 종합 진단</div>
-    <div class="chart-wrap">
-      <div class="chart-canvas-wrap">
-        <canvas id="radarChart" width="360" height="360"></canvas>
+  <!-- 내 결과 -->
+  <div class="tab-panel active" id="tab-my">
+    <div class="respondent-card">
+      <div>
+        <h2 id="r-name">—</h2>
+        <div class="respondent-meta" id="r-meta">—</div>
       </div>
-      <div class="chart-legend" id="area-legend"></div>
+      <div style="text-align:right">
+        <div class="total-score-num" id="r-total">—</div>
+        <div class="total-score-label">전체 평균 / 5점</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">영역별 종합 진단</div>
+      <div class="chart-wrap">
+        <div class="chart-canvas-wrap"><canvas id="radarChart" width="300" height="300"></canvas></div>
+        <div class="chart-legend" id="area-legend"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">하위요인별 상세 진단</div>
+      <table class="factor-table">
+        <thead><tr>
+          <th>요인</th><th>분포</th><th class="r">점수</th><th>진단</th>
+        </tr></thead>
+        <tbody id="factor-tbody"></tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">강점 & 개발 포인트</div>
+      <div class="highlight-grid" id="highlight-grid"></div>
     </div>
   </div>
 
-  <!-- 하위요인별 상세 -->
-  <div class="card" id="factor-detail"></div>
-
-  <!-- 강점 / 개발 포인트 -->
-  <div class="card">
-    <div class="card-title">강점 & 개발 포인트</div>
-    <div class="highlight-grid" id="highlight-grid"></div>
+  <!-- 전체 응답 조회 -->
+  <div class="tab-panel" id="tab-all">
+    <div class="card">
+      <div class="card-title">구글 시트 전체 응답</div>
+      <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:16px">
+        제출된 모든 응답은 구글 시트에 실시간으로 저장됩니다.
+      </p>
+      <a href="https://docs.google.com/spreadsheets/d/1yndM6w-EfaKpva-5ea81yJYZkRxsUIpA801DPDjfSww/edit"
+        target="_blank"
+        style="display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;
+               padding:12px 22px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:700">
+        구글 시트 열기 →
+      </a>
+    </div>
+    <div class="card">
+      <div class="card-title">이 기기의 최근 응답</div>
+      <div id="local-history" style="font-size:13px;color:var(--muted)">불러오는 중...</div>
+    </div>
   </div>
-
 </div>
 
 <script src="data.js"></script>
 <script>
-// ── 데이터 로드 ──────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll('.tab-btn').forEach((b,i) =>
+    b.classList.toggle('active', (name==='my'&&i===0)||(name==='all'&&i===1)));
+  document.getElementById('tab-my').classList.toggle('active', name==='my');
+  document.getElementById('tab-all').classList.toggle('active', name==='all');
+}
+
 const raw = JSON.parse(localStorage.getItem('leadershipResult') || 'null');
 
 if (!raw) {
-  document.querySelector('.container').innerHTML = `
-    <div style="text-align:center;padding:80px 20px">
-      <p style="font-size:16px;color:var(--muted)">결과 데이터가 없습니다.<br>설문을 먼저 완료해 주세요.</p>
-      <a href="survey.html" style="display:inline-block;margin-top:20px;padding:12px 32px;background:var(--accent);color:#fff;border-radius:8px;text-decoration:none;font-weight:600">설문 시작하기</a>
+  document.getElementById('tab-my').innerHTML = `
+    <div style="text-align:center;padding:60px 20px;background:#fff;border-radius:12px;border:1px solid var(--border)">
+      <p style="font-size:15px;color:var(--muted);margin-bottom:20px">결과 데이터가 없습니다.<br>설문을 먼저 완료해 주세요.</p>
+      <a href="survey.html" style="display:inline-block;padding:12px 32px;background:var(--accent);color:#fff;border-radius:8px;text-decoration:none;font-weight:700">설문 시작하기</a>
     </div>`;
 } else {
   const { name, dept, pos, years, scores } = raw;
   const { factorScores, areaScores, total, strengths, develops } = calcScores(scores);
 
-  // ── 응답자 정보 ──
   document.getElementById('r-name').textContent = name || '익명';
   document.getElementById('r-meta').textContent = [dept, pos, years ? `근속 ${years}년` : null].filter(Boolean).join(' · ');
   document.getElementById('r-total').textContent = total.toFixed(2);
 
-  // ── 방사형 그래프 ──
-  const ctx = document.getElementById('radarChart').getContext('2d');
+  // 방사형 그래프 — 그라데이션
+  const canvas = document.getElementById('radarChart');
+  const ctx = canvas.getContext('2d');
+  const cx = canvas.width / 2, cy = canvas.height / 2;
+  const grad = ctx.createRadialGradient(cx, cy, 8, cx, cy, 150);
+  grad.addColorStop(0,   'rgba(68,114,196,0.60)');
+  grad.addColorStop(0.45,'rgba(155,89,182,0.38)');
+  grad.addColorStop(1,   'rgba(112,173,71,0.10)');
+
   new Chart(ctx, {
     type: 'radar',
     data: {
       labels: areaScores.map(a => a.label),
       datasets: [{
         data: areaScores.map(a => a.score),
-        backgroundColor: 'rgba(26,25,22,0.08)',
-        borderColor: '#1A1916',
-        borderWidth: 2,
+        backgroundColor: grad,
+        borderColor: 'rgba(68,114,196,0.85)',
+        borderWidth: 2.5,
         pointBackgroundColor: areaScores.map(a => a.color),
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
         pointRadius: 5,
         pointHoverRadius: 7,
       }]
     },
     options: {
       responsive: true,
-      scales: {
-        r: {
-          min: 0, max: 5,
-          ticks: { stepSize: 1, font: { size: 11 }, color: '#aaa' },
-          grid: { color: 'rgba(0,0,0,0.08)' },
-          pointLabels: { font: { size: 13, family: 'Pretendard', weight: '600' }, color: '#1A1916' },
-          angleLines: { color: 'rgba(0,0,0,0.1)' },
-        }
-      },
+      scales: { r: {
+        min: 0, max: 5,
+        ticks: { stepSize: 1, font: { size: 10, family: 'Pretendard' }, color: '#bbb', backdropColor: 'transparent' },
+        grid: { color: 'rgba(0,0,0,0.07)' },
+        pointLabels: { font: { size: 12, family: 'Pretendard', weight: '700' }, color: '#1A1916' },
+        angleLines: { color: 'rgba(0,0,0,0.08)' },
+      }},
       plugins: { legend: { display: false } },
+      animation: { duration: 700, easing: 'easeInOutQuart' }
     }
   });
 
-  // ── 영역 범례 ──
-  const legendEl = document.getElementById('area-legend');
-  legendEl.innerHTML = areaScores.map(a => `
+  // 범례
+  document.getElementById('area-legend').innerHTML = areaScores.map(a => `
     <div class="legend-item">
-      <div style="flex:1">
+      <div class="legend-left">
         <div class="legend-dot-label">
           <div class="legend-dot" style="background:${a.color}"></div>
           <span class="legend-label">${a.label}</span>
         </div>
-        <div class="legend-bar-wrap" style="margin-top:6px">
+        <div class="legend-desc">${a.desc}</div>
+        <div class="legend-bar-wrap">
           <div class="legend-bar-fill" style="width:${a.score/5*100}%;background:${a.color}"></div>
         </div>
-        <div style="font-size:11px;color:var(--muted);margin-top:4px">${a.desc}</div>
       </div>
-      <div class="legend-score" style="color:${a.color};margin-left:16px">${a.score.toFixed(2)}</div>
+      <div class="legend-score" style="color:${a.color}">${a.score.toFixed(2)}</div>
+    </div>`).join('');
+
+  // 하위요인 테이블
+  document.getElementById('factor-tbody').innerHTML = factorScores.map(f => {
+    const area = AREAS.find(a => a.id === f.area);
+    const interp = INTERPRETATIONS[f.id][getLevel(f.score)];
+    return `<tr class="factor-row">
+      <td><span class="area-badge" style="background:${area.color}">${area.label.split('-')[0]}</span><span class="factor-name">${f.label}</span></td>
+      <td class="bar-cell"><div class="bar-bg"><div class="bar-fill" style="width:${f.score/5*100}%;background:${area.color}"></div></div></td>
+      <td class="score-cell" style="color:${area.color}">${f.score.toFixed(2)}</td>
+      <td class="desc-cell">${interp}</td>
+    </tr>`;
+  }).join('');
+
+  // 강점/개발
+  document.getElementById('highlight-grid').innerHTML = `
+    <div class="hl-card s">
+      <div class="hl-tag s">⭐ 강점 TOP 3</div>
+      ${strengths.map(f => `
+        <div class="hl-row"><span class="hl-name">${f.label}</span><span class="hl-score s">${f.score.toFixed(2)}</span></div>
+        <div class="hl-interp">${INTERPRETATIONS[f.id].high}</div>`).join('')}
     </div>
-  `).join('');
-
-  // ── 하위요인 상세 ──
-  const detailEl = document.getElementById('factor-detail');
-  let detailHtml = '<div class="card-title">하위요인별 상세 진단</div>';
-
-  AREAS.forEach(area => {
-    const areaFactors = factorScores.filter(f => f.area === area.id);
-    detailHtml += `
-      <div style="margin-bottom:16px">
-        <span class="area-section-title" style="background:${area.color}">${area.label}</span>
-        <div class="factor-grid">
-          ${areaFactors.map(f => {
-            const level = getLevel(f.score);
-            const interp = INTERPRETATIONS[f.id][level];
-            return `
-              <div class="factor-item">
-                <div class="factor-top">
-                  <span class="factor-name">${f.label}</span>
-                  <span class="factor-score" style="color:${area.color}">${f.score.toFixed(2)}</span>
-                </div>
-                <div class="factor-bar-bg">
-                  <div class="factor-bar-fill" style="width:${f.score/5*100}%;background:${area.color}"></div>
-                </div>
-                <div class="factor-desc">${interp}</div>
-              </div>`;
-          }).join('')}
-        </div>
-      </div>`;
-  });
-
-  detailEl.innerHTML = detailHtml;
-
-  // ── 강점 / 개발 포인트 ──
-  const highlightEl = document.getElementById('highlight-grid');
-  highlightEl.innerHTML = `
-    <div class="highlight-card strength">
-      <div class="highlight-icon">⭐</div>
-      <div class="highlight-title strength">강점 영역 TOP 3</div>
-      <div class="highlight-list">
-        ${strengths.map(f => {
-          const area = AREAS.find(a => a.id === f.area);
-          return `
-            <div>
-              <div class="highlight-row">
-                <span class="highlight-name">${f.label}</span>
-                <span class="highlight-score s">${f.score.toFixed(2)}</span>
-              </div>
-              <div class="highlight-interp">${INTERPRETATIONS[f.id].high}</div>
-            </div>`;
-        }).join('')}
-      </div>
-    </div>
-    <div class="highlight-card develop">
-      <div class="highlight-icon">🎯</div>
-      <div class="highlight-title develop">개발 포인트 BOTTOM 3</div>
-      <div class="highlight-list">
-        ${develops.map(f => `
-          <div>
-            <div class="highlight-row">
-              <span class="highlight-name">${f.label}</span>
-              <span class="highlight-score d">${f.score.toFixed(2)}</span>
-            </div>
-            <div class="highlight-interp">${INTERPRETATIONS[f.id].low}</div>
-          </div>`
-        ).join('')}
-      </div>
+    <div class="hl-card d">
+      <div class="hl-tag d">🎯 개발 포인트 BOTTOM 3</div>
+      ${develops.map(f => `
+        <div class="hl-row"><span class="hl-name">${f.label}</span><span class="hl-score d">${f.score.toFixed(2)}</span></div>
+        <div class="hl-interp">${INTERPRETATIONS[f.id].low}</div>`).join('')}
     </div>`;
+}
+
+// 로컬 히스토리
+const histEl = document.getElementById('local-history');
+const hist = localStorage.getItem('leadershipResult');
+if (hist) {
+  const d = JSON.parse(hist);
+  const s = calcScores(d.scores);
+  histEl.innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">
+      <div>
+        <div style="font-weight:700;font-size:14px">${d.name||'익명'}</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px">${d.dept||''} · ${d.pos||''}</div>
+      </div>
+      <div style="font-size:20px;font-weight:900;color:var(--accent)">${s.total.toFixed(2)}</div>
+    </div>
+    <p style="margin-top:10px;font-size:12px;color:var(--muted)">전체 응답은 구글 시트에서 확인하세요.</p>`;
+} else {
+  histEl.textContent = '이 기기에 저장된 응답이 없습니다.';
 }
 </script>
 </body>
