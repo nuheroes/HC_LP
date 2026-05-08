@@ -6,7 +6,7 @@
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxOKi0IbcRas9ZifJ6ZJaL3ZfMY-qjiQKJW2aoTdpLWICwd7DPLLxGHfcQrCfgQipBF/exec";
 
 // ── 접근 비밀번호 (변경 시 이 값만 수정) ──
-const ACCESS_PASSWORD = "innofitpdg2025";
+const ACCESS_PASSWORD = "innofit2026";
 
 // ── 영역 정의 ──────────────────────────────────
 const AREAS = [
